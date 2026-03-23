@@ -4,6 +4,17 @@ Small study to learn muti-threading in assembly
 
 ---
 
+### How to run:
+```sh
+# give the execute permission
+chmod +x compile.sh
+
+# run the compiler
+./compile.sh
+```
+
+---
+
 *note: this project was made on linux, so it may not work in other OS
 
 ---

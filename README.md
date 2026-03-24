@@ -1,6 +1,6 @@
 # Assembly study
 
-Small study to learn muti-threading in assembly
+Small study to learn multi-threading in assembly
 
 ---
 

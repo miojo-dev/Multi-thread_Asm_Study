@@ -5,6 +5,7 @@ Small study to learn multi-threading in assembly
 ---
 
 ### How to run:
+
 ```sh
 # give the execute permission
 chmod +x compile.sh

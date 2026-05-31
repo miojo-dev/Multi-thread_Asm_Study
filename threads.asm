@@ -27,31 +27,32 @@ _start:
     int 0x80 ; Kernel call
 
     ; Create thread 1
-    mov eax, 56 ; syscall clone
-    mov edi, 0x00000100 ; CLONE_VM - share memory
-    mov esi, 0 ; stack (NULL = use current stack)
-    mov edx, thread1_func ; function of the thread
-    mov ecx, 0 ; arguments
+    mov eax, 120 ; syscall clone
+    mov ebx, 0x4111 ; CLONE_VM - share memory
+    mov ecx, 0 ; stack (NULL = use current stack)
     int 0x80
+    test eax, eax
+    je thread1_func ; if eax == 0, we are in the child (thread 1)
 
     ; Create thread 2
-    mov eax, 56 ; syscall clone
-    mov edi, 0x00000100 ; CLONE_VM
-    mov esi, stack2 + 4096 ; top of the stack (grows down)
-    mov edx, thread2_func ; function of the thread
-    mov ecx, 0 ; arguments
+    mov eax, 120 ; syscall clone
+    mov ebx, 0x4111 ; CLONE_VM
+    mov ecx, stack2 + 4096 ; top of the stack (grows down)
     int 0x80
+    test eax, eax
+    je thread2_func ; if eax == 0, we are in the child (thread 2)
 
     ; wait the threads to finish
     mov eax, 114 ; syscall wait4
     mov ebx, -1 ; wait any child
     mov ecx, 0 ; status
     mov edx, 0 ; options
+    mov esi, 0
     int 0x80
 
     ; exit
-    mov eax, 60
-    xor edi, edi
+    mov eax, 1 ; syscall exit
+    xor ebx, ebx
     int 0x80
 
 thread1_func:
@@ -69,8 +70,8 @@ thread1_func:
     int 0x80
 
     ; exit thread
-    mov eax, 60
-    xor edi, edi
+    mov eax, 1 ; syscall exit
+    xor ebx, ebx
     int 0x80
 
 thread2_func:
@@ -88,8 +89,8 @@ thread2_func:
     int 0x80
 
     ; exit thread
-    mov eax, 60
-    xor edi, edi
+    mov eax, 1
+    xor ebx, ebx
     int 0x80
 
 concat_strings:
@@ -108,6 +109,8 @@ concat_strings:
     inc ecx
     cmp dl, 0 ; end of the string?
     jne .copy_loop1
+
+    dec ecx ; remove null char
 
     ; copy 2nd string
     mov ebx, edi ; ebx = src2

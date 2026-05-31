@@ -7,8 +7,8 @@ section .data
 section .bss
     stack2 resb 4096 ; 4KB para stack da thread 2
     name resb 100 ; name buffer
-    temp_msg1 resb 100  ; temporary buffer for thread 1
-    temp_msg2 resb 100  ; temporary buffer for thread 2
+    temp_msg1 resb 100 ; temporary buffer for thread 1
+    temp_msg2 resb 100 ; temporary buffer for thread 2
 
 section .text
     global _start
@@ -43,10 +43,10 @@ _start:
     int 0x80
 
     ; wait the threads to finish
-    mov eax, 114     ; syscall wait4
-    mov ebx, -1      ; wait any child
-    mov ecx, 0       ; status
-    mov edx, 0       ; options
+    mov eax, 114 ; syscall wait4
+    mov ebx, -1 ; wait any child
+    mov ecx, 0 ; status
+    mov edx, 0 ; options
     int 0x80
 
     ; exit
